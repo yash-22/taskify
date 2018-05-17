@@ -1,3 +1,5 @@
+const PAGE_ACCESS_TOKEN = process.env.PAGE_ACCESS_TOKEN;
+const request = require('request');
 'use strict';
 
 // Imports dependencies and set up http server
