@@ -80,7 +80,12 @@ function handleMessage(sender_psid, received_message) {
     let response;
 
     // Check if the message contains text
-    if (received_message.text) {
+    const isGreeting = getEntity(received_message.nlp, 'greetings');
+    if (isGreeting && isGreeting.confidence > 0.5) {
+        response = {
+            "text": 'Welcome to taskify. The Scheduling Bot. Now set remainders over messenger interactively.'
+        }
+    } else if (received_message.text) {
 
         // Create the payload for a basic text message
         response = {
@@ -163,4 +168,8 @@ function callSendAPI(sender_psid, response) {
             console.error("Unable to send message:" + err);
         }
     });
+}
+
+function getEntity(nlp, name) {
+    return nlp && nlp.entities && nlp.entities[name] && nlp.entities[name][0];
 }
