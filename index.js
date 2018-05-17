@@ -81,8 +81,8 @@ function handleMessage(sender_psid, received_message) {
 
     // Check if the message contains text
     const isGreeting = getEntity(received_message.nlp, 'greetings');
-    const time = getTimeLoc(recieved_message.nlp, 'datetime');
-    const location = getTimeLoc(recieved_message.nlp, 'location');
+    const time = getTimeLoc(received_message.nlp, 'datetime');
+    const location = getTimeLoc(received_message.nlp, 'location');
     if (isGreeting && isGreeting.confidence > 0.5) {
         response = {
             "text": 'Welcome to taskify. The Scheduling Bot. Now set remainders over messenger interactively.'
