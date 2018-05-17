@@ -93,11 +93,11 @@ function handleMessage(sender_psid, received_message) {
         }
     } else if (time && time.confidence > 0.7 && location && location.confidence > 0.7) {
         response = {
-            "text": 'Task set at : ' + time + 'and ' + location 
+            "text": 'Task set at : ' + time.values() + 'and ' + location.values() 
         }
     } else if (time && time.confidence > 0.7 ) {
         response = {
-            "text": 'Task set at :' + time + '.'
+            "text": 'Task set at :' + time.values() + '.'
         }
             callSendAPI(sender_psid, response);
         response = {
@@ -105,7 +105,7 @@ function handleMessage(sender_psid, received_message) {
         }
     } else if (location && location.confidence > 0.7) {
         response = {
-            "text": 'Task set at : ' + location + '.'
+            "text": 'Task set at : ' + location.values() + '.'
         }
         callSendAPI(sender_psid, response);
         response = {
