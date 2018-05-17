@@ -81,15 +81,41 @@ function handleMessage(sender_psid, received_message) {
 
     // Check if the message contains text
     const isGreeting = getEntity(received_message.nlp, 'greetings');
+    const time = getTimeLoc(recieved_message.nlp, 'datetime');
+    const location = getTimeLoc(recieved_message.nlp, 'location');
     if (isGreeting && isGreeting.confidence > 0.5) {
         response = {
             "text": 'Welcome to taskify. The Scheduling Bot. Now set remainders over messenger interactively.'
+        }
+        callSendAPI(sender_psid, response);
+        response = {
+            "text": 'What do you want to do today or this week?'
+        }
+    } else if (time && time.confidence > 0.7 && location && location.confidence > 0.7) {
+        response = {
+            "text": 'Task set at : "${time}" and "${location}"'
+        }
+    } else if (time && time.confidence > 0.7 ) {
+        response = {
+            "text": 'Task set at : "${time}".'
+        }
+            callSendAPI(sender_psid, response);
+        response = {
+            "text": 'What is the location for this task?'
+        }
+    } else if (location && location.confidence > 0.7) {
+        response = {
+            "text": 'Task set at : "${location}".'
+        }
+        callSendAPI(sender_psid, response);
+        response = {
+            "text": 'What time for this task?'
         }
     } else if (received_message.text) {
 
         // Create the payload for a basic text message
         response = {
-            "text": `You sent the message: "${received_message.text}". Now send me an image!`
+            "text": `You sent the message: "${received_message.text}".`
         }
     } else if (received_message.attachments) {
 
@@ -172,4 +198,10 @@ function callSendAPI(sender_psid, response) {
 
 function getEntity(nlp, name) {
     return nlp && nlp.entities && nlp.entities[name] && nlp.entities[name][0];
+}
+
+function getTimeLoc(nlp, name) {
+    if (nlp && nlp.entities && nlp.entities[name] && nlp.entities[name][0]) {
+        return nlp.entities[name][0];
+    }
 }
