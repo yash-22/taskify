@@ -83,7 +83,7 @@ function handleMessage(sender_psid, received_message) {
     const isGreeting = getEntity(received_message.nlp, 'greetings');
     const time = getTimeLoc(received_message.nlp, 'datetime');
     const location = getTimeLoc(received_message.nlp, 'location');
-    if (isGreeting && isGreeting.confidence > 0.5) {
+    if (isGreeting && isGreeting.confidence > 0.8) {
         response = {
             "text": 'Welcome to taskify. The Scheduling Bot. Now set remainders over messenger interactively.'
         }
@@ -93,11 +93,11 @@ function handleMessage(sender_psid, received_message) {
         }
     } else if (time && time.confidence > 0.7 && location && location.confidence > 0.7) {
         response = {
-            "text": 'Task set at : ' + time.values() + 'and ' + location.values() 
+            "text": 'Task set at : ' + time.value + 'and ' + location.value 
         }
     } else if (time && time.confidence > 0.7 ) {
         response = {
-            "text": 'Task set at :' + time.values() + '.'
+            "text": 'Task set at :' + time.value + '.'
         }
             callSendAPI(sender_psid, response);
         response = {
@@ -105,7 +105,7 @@ function handleMessage(sender_psid, received_message) {
         }
     } else if (location && location.confidence > 0.7) {
         response = {
-            "text": 'Task set at : ' + location.values() + '.'
+            "text": 'Task set at : ' + location.value + '.'
         }
         callSendAPI(sender_psid, response);
         response = {
